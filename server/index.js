@@ -1,4 +1,5 @@
 require('./models/User')
+const dotenv = require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')

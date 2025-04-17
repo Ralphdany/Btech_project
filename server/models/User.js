@@ -2,6 +2,12 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        unique: true,
+        required: true
+
+    },
     email: {
         type: String,
         unique: true,
@@ -39,6 +45,7 @@ userSchema.methods.comparePassword = function (candidatePassword) {
     return new Promise ((resolve, reject) => {
         bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
             if (err) {
+                
                 return reject(err)
             }
             if (!isMatch) {
