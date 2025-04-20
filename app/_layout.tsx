@@ -1,18 +1,19 @@
-import { Stack } from 'expo-router';
-// import { Provider as AuthProvider } from '@/context/authContext';
+import { Slot, Redirect } from 'expo-router';
+
+import {  AuthProvider, useAuth } from '@/context/authContext';
 import './global.css'
 
-export default function Layout() {
-  const isSignedIn = false
-  return (
-    <Stack>
-      { isSignedIn ? 
-        <Stack.Screen name="(tabs)"  options={{headerShown: false}} />
-        :
-        <Stack.Screen name="(auth)" options={{headerShown: false}} />
-    }
-      
-    </Stack>
 
+export default function Layout() {
+
+  return (
+    <AuthProvider>
+      <Slot/>
+    </AuthProvider>
+  
   );
 }
+
+
+
+

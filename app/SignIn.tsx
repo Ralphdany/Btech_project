@@ -1,17 +1,23 @@
-import { View, Text, TextInput, Keyboard,TouchableHighlight,KeyboardAvoidingView, StyleSheet, Platform, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
+import { View, Text, TextInput, Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
+import { useRouter } from 'expo-router';
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAuth } from '@/context/authContext';
 
 const LoggedUser = z.object({
   email: z.string().email({message:"must be a valid email address" }),
   password: z.string().min(8, {message:"password must be at least 8 characters" })
 })
 
+
+
 type formData = z.infer<typeof LoggedUser>
 
 const SignUp = () => {
+  const { login, error, isLoading, token } = useAuth()
+  
   const {
     control,
     handleSubmit,
@@ -21,8 +27,16 @@ const SignUp = () => {
   });
 
   const onSubmit = (data: formData) => {
-    Alert.alert(JSON.stringify(data))
+
+        login(data.email, data.password)
   }
+
+  
+  const router = useRouter()
+  // if (token) {
+  //   router.replace('/'); // This replaces current stack with Home
+  // }
+
   return (
     
       <KeyboardAvoidingView 
@@ -48,8 +62,14 @@ const SignUp = () => {
           )}
           name="email"
         />
-        {  
-          <Text className="text-red-600 text-sm">{errors.email?.message}</Text>}
+        
+        {error ? (
+            <Text className="text-red-600 text-sm">{error}</Text>
+          ) : (
+            <Text className="text-red-600 text-sm">
+              {errors.email?.message}
+            </Text>
+          )}
       </View>
       </TouchableWithoutFeedback>
 
@@ -71,15 +91,33 @@ const SignUp = () => {
           )}
           name="password"
         />
-        {<Text className="text-red-600 text-sm">{errors.password?.message}</Text>}
+  {error ? (
+            <Text className="text-red-600 text-sm">{error}</Text>
+          ) : (
+            <Text className="text-red-600 text-sm">
+              {errors.password?.message}
+            </Text>
+          )}
       </View>
       </TouchableWithoutFeedback>
 
       <TouchableOpacity
-       className="bg-cyan-400 py-4 px-2  font-bold rounded-md"
+       className="bg-cyan-400 py-4 px-2  font-bold rounded-md flex justify-center align-center"
        onPress={handleSubmit(onSubmit)}>
-        <Text className="text-lg text-center text-white">Sign up</Text>
+        {isLoading ? 
+        <ActivityIndicator size="small" color="white"/>
+        :
+        <Text className="text-lg text-center text-white">Sign in</Text>
+
+      }
       </TouchableOpacity>
+
+      <View className="flex flex-row">
+       <Text className="text-center mt-2">Already have an account?</Text>
+       <TouchableOpacity className="ml-2 mt-2" onPress={() => router.push('/SignUp')}>
+          <Text className="text-center text-cyan-400 font-bold">Sign up</Text>
+       </TouchableOpacity>
+     </View>
 
       </KeyboardAvoidingView>
       

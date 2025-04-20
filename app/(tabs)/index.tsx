@@ -1,8 +1,16 @@
-import { Link } from "expo-router";
-import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { useAuth } from "@/context/authContext";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  const { signOut, user} = useAuth()
+
+  const handleSignOut = async () => {
+    try {
+       signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  }
  
   return (
     <View
@@ -12,8 +20,12 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text className="text-3xl font-bold py-10">Edit app/index.tsx to edit this screen.</Text>
-      <Link href='/SignUp'>Go to Sign Up page</Link>
+      <Text className="text-3xl font-bold py-10">Hello, {user?.name}</Text>
+      <TouchableOpacity
+       className="bg-cyan-400 py-4 px-2  font-bold rounded-md"
+       onPress={handleSignOut}>
+        <Text className="text-lg text-center text-white">Sign out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
