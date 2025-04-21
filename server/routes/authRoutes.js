@@ -8,6 +8,10 @@ const router = express.Router()
 
 router.post('/signup', async (req, res) => {
     const {  name, email, password } = req.body
+    const user = await User.findOne({email})
+    if (user) {
+        res.send({message: "User already exists"})
+    }
     try{
         const user = new User({ name, email, password})
         await user.save()
@@ -30,7 +34,7 @@ router.post('/signin', async (req, res) => {
 
     const user = await User.findOne({email})
     if(!user) {
-        return res.status(404).send({error: "User not found"})
+        return res.status(404).send({error: "email not found"})
     }
 
     try{

@@ -2,14 +2,13 @@ import axios from "axios"
 import Constants from "expo-constants"
 
 const ip = Constants.expoConfig?.hostUri?.replace("8081","3000")
-console.log("IP", ip);
 
 interface loginResponse {
   token: string
 }
 
 interface errorResponse {
-  error: string
+  message: string
 }
 interface registerResponse {
   message: string

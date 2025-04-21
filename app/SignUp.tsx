@@ -19,11 +19,15 @@ import { router } from "expo-router";
 
 const userSchema = z
   .object({
-    name: z.string(),
-    email: z.string().email({ message: "must be a valid email address" }),
+    name: z.string()
+    .min(3, { message: "name must be at least 3 characters" })
+    .regex(/^[a-zA-Z0-9]+$/, {message: "name must be alphanumeric"})
+    .nonempty({ message: "name is required" }),
+    email: z.string().email({ message: "must be a valid email address" }).nonempty({ message: "email is required" }),
     password: z
       .string()
-      .min(8, { message: "password must be at least 8 characters" }),
+      .min(8, { message: "password must be at least 8 characters" })
+      .nonempty({ message: "password is required" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -43,8 +47,10 @@ const SignUp = () => {
     resolver: zodResolver(userSchema),
   });
   const onSubmit = async (data: Omit<FormData, "confirmPassword">) => {
-    signUp(data.name, data.email, data.password);
+    const { name, email, password } = data
+    signUp(name, email, password);
   };
+
 
   return (
     <KeyboardAvoidingView
@@ -175,7 +181,7 @@ const SignUp = () => {
           <Text className="text-center mt-2">Already have an account?</Text>
           <TouchableOpacity
             className="ml-2 mt-2"
-            onPress={() => router.push("/SignIn")}
+            onPress={() => router.replace("/SignIn")}
           >
             <Text className="text-center text-cyan-400 font-bold">Login</Text>
           </TouchableOpacity>

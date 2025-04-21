@@ -1,14 +1,16 @@
 import { View, Text, TextInput, Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuth } from '@/context/authContext';
 
 const LoggedUser = z.object({
-  email: z.string().email({message:"must be a valid email address" }),
+  email: z.string().email({message:"must be a valid email address" })
+  .nonempty({message:"email is required" }),
   password: z.string().min(8, {message:"password must be at least 8 characters" })
+  .nonempty({message:"password is required" }),
 })
 
 
@@ -27,16 +29,14 @@ const SignUp = () => {
   });
 
   const onSubmit = (data: formData) => {
-
-        login(data.email, data.password)
+        const {email, password} = data
+        login(email, password)
   }
 
   
   const router = useRouter()
-  // if (token) {
-  //   router.replace('/'); // This replaces current stack with Home
-  // }
 
+  if(token) return <Redirect href="/"/>
   return (
     
       <KeyboardAvoidingView 
@@ -114,7 +114,7 @@ const SignUp = () => {
 
       <View className="flex flex-row">
        <Text className="text-center mt-2">Already have an account?</Text>
-       <TouchableOpacity className="ml-2 mt-2" onPress={() => router.push('/SignUp')}>
+       <TouchableOpacity className="ml-2 mt-2" onPress={() => router.replace('/SignUp')}>
           <Text className="text-center text-cyan-400 font-bold">Sign up</Text>
        </TouchableOpacity>
      </View>
