@@ -1,5 +1,4 @@
 require('./models/User')
-const dotenv = require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -19,7 +18,8 @@ mongoClient.connection.on('connected', () => {
 })
 mongoClient.connection.on('error', err => console.error(err))
 app.get('/', requireAuth, (req, res) => {
-    res.send(`Your email is : ${req.user.email}`)
+    const { name, email } = req.user
+    res.send({name, email})
 })
 
 app.listen(port, () => {
