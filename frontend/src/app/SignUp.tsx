@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import React from "react";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from '@/src/context/authContext';
 import { router } from "expo-router";
 
 const userSchema = z

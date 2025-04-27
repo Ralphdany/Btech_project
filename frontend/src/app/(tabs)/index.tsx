@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/authContext";
+import { useAuth } from '@/src/context/authContext';
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {

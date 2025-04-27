@@ -4,7 +4,7 @@ import { Redirect, useRouter } from 'expo-router';
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from '@/context/authContext';
+import { useAuth } from '@/src/context/authContext';
 
 const LoggedUser = z.object({
   email: z.string().email({message:"must be a valid email address" })

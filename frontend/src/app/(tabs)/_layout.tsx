@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Redirect, Tabs } from 'expo-router';
-import { useAuth } from '@/context/authContext';
+import { useAuth } from '@/src/context/authContext';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
 
 export default function TabLayout() {
