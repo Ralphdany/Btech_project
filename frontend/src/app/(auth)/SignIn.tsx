@@ -53,10 +53,12 @@ const SignUp = () => {
   if (token) return <Redirect href="/" />;
   return (
     <KeyboardAvoidingView
-      className="flex flex-column flex-1 justify-center p-10 bg-white"
+      className="flex flex-column flex-1 justify-center p-6 bg-white"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Text className="text-3xl text-center font-bold mb-8 text-gray-800">Welcome Back</Text>
+      <Text className="text-3xl text-center font-bold mb-8 text-gray-800">
+        Welcome Back
+      </Text>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
           <Text className="font-bold mb-2 text-gray-700">Email</Text>
@@ -64,10 +66,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="mail-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -84,9 +86,7 @@ const SignUp = () => {
             )}
             name="email"
           />
-          <Text className="text-red-600 text-sm">
-            {errors.email?.message}
-          </Text>
+          <Text className="text-red-600 text-sm">{errors.email?.message}</Text>
         </View>
       </TouchableWithoutFeedback>
 
@@ -97,10 +97,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="lock-closed-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -112,14 +112,14 @@ const SignUp = () => {
                   onChangeText={onChange}
                   value={value}
                 />
-                <TouchableOpacity 
+                <TouchableOpacity
                   className="absolute right-3 top-4"
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Ionicons 
-                    name={showPassword ? "eye-off" : "eye"} 
-                    size={24} 
-                    color="gray" 
+                  <Ionicons
+                    name={showPassword ? "eye-off" : "eye"}
+                    size={24}
+                    color="gray"
                   />
                 </TouchableOpacity>
               </View>
@@ -144,7 +144,9 @@ const SignUp = () => {
       </TouchableOpacity>
 
       <View className="flex flex-row justify-center mt-4">
-        <Text className="text-center text-gray-600">Don't have an account?</Text>
+        <Text className="text-center text-gray-600">
+          Don't have an account?
+        </Text>
         <TouchableOpacity
           className="ml-2"
           onPress={() => router.replace("/SignUp")}
@@ -154,9 +156,9 @@ const SignUp = () => {
       </View>
       <View className="flex flex-row justify-center mt-4">
         <TouchableOpacity
-              className="mt-1 mb-4"
-              onPress={() => router.push("/ResetPassword")}
-            >
+          className="mt-1 mb-4"
+          onPress={() => router.push("/ResetPassword")}
+        >
           <Text className="text-right text-cyan-400">Forgot Password?</Text>
         </TouchableOpacity>
       </View>

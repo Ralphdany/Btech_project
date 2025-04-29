@@ -19,11 +19,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 const userSchema = z
   .object({
-    name: z.string()
-    .min(3, { message: "name must be at least 3 characters" })
-    .regex(/^[a-zA-Z0-9]+$/, {message: "name must be alphanumeric"})
-    .nonempty({ message: "name is required" }),
-    email: z.string().email({ message: "must be a valid email address" }).nonempty({ message: "email is required" }),
+    name: z
+      .string()
+      .min(3, { message: "name must be at least 3 characters" })
+      .regex(/^[a-zA-Z0-9]+$/, { message: "name must be alphanumeric" })
+      .nonempty({ message: "name is required" }),
+    email: z
+      .string()
+      .email({ message: "must be a valid email address" })
+      .nonempty({ message: "email is required" }),
     password: z
       .string()
       .min(8, { message: "password must be at least 8 characters" })
@@ -50,15 +54,14 @@ const SignUp = () => {
     mode: "onChange",
   });
   const onSubmit = async (data: Omit<FormData, "confirmPassword">) => {
-    const { name, email, password } = data
+    const { name, email, password } = data;
     signUp(name, email, password);
   };
-
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex flex-column flex-1 justify-center p-10"
+      className="flex flex-column flex-1 justify-center p-6"
     >
       <Text className="text-3xl text-center font-bold ">Sign Up</Text>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -68,10 +71,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="person-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="person-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -98,10 +101,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="mail-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -118,9 +121,7 @@ const SignUp = () => {
             )}
             name="email"
           />
-          <Text className="text-red-600 text-sm">
-            {errors.email?.message}
-          </Text>
+          <Text className="text-red-600 text-sm">{errors.email?.message}</Text>
         </View>
       </TouchableWithoutFeedback>
 
@@ -131,10 +132,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="lock-closed-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -146,14 +147,14 @@ const SignUp = () => {
                   onChangeText={onChange}
                   value={value}
                 />
-                <TouchableOpacity 
+                <TouchableOpacity
                   className="absolute right-3 top-4"
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Ionicons 
-                    name={showPassword ? "eye-off" : "eye"} 
-                    size={24} 
-                    color="gray" 
+                  <Ionicons
+                    name={showPassword ? "eye-off" : "eye"}
+                    size={24}
+                    color="gray"
                   />
                 </TouchableOpacity>
               </View>
@@ -173,10 +174,10 @@ const SignUp = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="lock-closed-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -188,14 +189,14 @@ const SignUp = () => {
                   onChangeText={onChange}
                   value={value}
                 />
-                <TouchableOpacity 
+                <TouchableOpacity
                   className="absolute right-3 top-4"
                   onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  <Ionicons 
-                    name={showConfirmPassword ? "eye-off" : "eye"} 
-                    size={24} 
-                    color="gray" 
+                  <Ionicons
+                    name={showConfirmPassword ? "eye-off" : "eye"}
+                    size={24}
+                    color="gray"
                   />
                 </TouchableOpacity>
               </View>

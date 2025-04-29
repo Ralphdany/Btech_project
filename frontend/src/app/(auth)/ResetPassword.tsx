@@ -43,7 +43,7 @@ const ResetPassword = () => {
     setIsLoading(true);
     try {
       // TODO: Implement actual password reset logic here
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulated API call
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulated API call
       setResetSent(true);
     } catch (error) {
       console.error(error);
@@ -54,9 +54,11 @@ const ResetPassword = () => {
 
   if (resetSent) {
     return (
-      <View className="flex-1 justify-center items-center p-10 bg-white">
+      <View className="flex-1 justify-center items-center p-6 bg-white">
         <Ionicons name="mail-outline" size={64} color="#34d399" />
-        <Text className="text-2xl font-bold text-center mt-6 mb-4">Check your email</Text>
+        <Text className="text-2xl font-bold text-center mt-6 mb-4">
+          Check your email
+        </Text>
         <Text className="text-gray-600 text-center mb-8">
           We've sent password reset instructions to your email address.
         </Text>
@@ -75,9 +77,12 @@ const ResetPassword = () => {
       className="flex flex-column flex-1 justify-center p-10 bg-white"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Text className="text-3xl text-center font-bold mb-4 text-gray-800">Reset Password</Text>
+      <Text className="text-3xl text-center font-bold mb-4 text-gray-800">
+        Reset Password
+      </Text>
       <Text className="text-gray-600 text-center mb-8">
-        Enter your email address and we'll send you instructions to reset your password.
+        Enter your email address and we'll send you instructions to reset your
+        password.
       </Text>
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -87,10 +92,10 @@ const ResetPassword = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="relative">
-                <Ionicons 
-                  name="mail-outline" 
-                  size={20} 
-                  color="gray" 
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color="gray"
                   className="absolute left-3 top-4"
                 />
                 <TextInput
@@ -107,9 +112,7 @@ const ResetPassword = () => {
             )}
             name="email"
           />
-          <Text className="text-red-600 text-sm">
-            {errors.email?.message}
-          </Text>
+          <Text className="text-red-600 text-sm">{errors.email?.message}</Text>
         </View>
       </TouchableWithoutFeedback>
 
@@ -120,15 +123,16 @@ const ResetPassword = () => {
         {isLoading ? (
           <ActivityIndicator size="small" color="white" />
         ) : (
-          <Text className="text-lg text-center text-white">Send Reset Instructions</Text>
+          <Text className="text-lg text-center text-white">
+            Send Reset Instructions
+          </Text>
         )}
       </TouchableOpacity>
 
-      <TouchableOpacity
-        className="mt-6"
-        onPress={() => router.back()}
-      >
-        <Text className="text-center text-cyan-400 font-bold">Back to Sign In</Text>
+      <TouchableOpacity className="mt-6" onPress={() => router.back()}>
+        <Text className="text-center text-cyan-400 font-bold">
+          Back to Sign In
+        </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
