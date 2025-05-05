@@ -8,7 +8,6 @@ import React, {
 import * as SecureStore from "expo-secure-store";
 import { loginUser, registerUser, getProfile } from "../services/authService";
 import { useRouter } from "expo-router";
-import { AxiosError } from "axios";
 import { Alert } from "react-native";
 
 interface AuthContextType {
@@ -25,13 +24,6 @@ interface userType {
   email: string;
 }
 
-interface loginResponse {
-  token: string;
-}
-
-interface errorResponse {
-  message: string;
-}
 
 const AuthContext = createContext({} as AuthContextType);
 

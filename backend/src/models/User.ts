@@ -15,7 +15,7 @@ const userSchema = new Schema<IUser>({
 });
 
 // Ensure indexes are properly set
-userSchema.index({ email: 1 }, { unique: true });
+// userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ name: 1 }, { unique: false });
 
 userSchema.pre("save", async function (next) {
