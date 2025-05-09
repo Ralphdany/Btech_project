@@ -7,30 +7,21 @@ import React, {
 } from "react";
 import * as SecureStore from "expo-secure-store";
 import { loginUser, registerUser, getProfile } from "../services/authService";
-import { ActivityIndicator, SafeAreaView } from "react-native";
-import { AxiosError } from "axios";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 interface AuthContextType {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  isSignedUp: boolean;
   signUp: (username: string, email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   user: userType | null;
-  error: string
-  isLoading: boolean
+  error: string;
+  isLoading: boolean;
 }
 interface userType {
   name: string;
   email: string;
-}
-
-interface loginResponse {
-  token: string
-}
-
-interface errorResponse {
-  message: string
 }
 
 
@@ -40,20 +31,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<userType | null>(null);
   const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("")
-  const [isSignedUp, setSignedUp] = useState<boolean>(false) // Start as true
+  const [error, setError] = useState<string>("");
+
+  const router = useRouter();
 
   useEffect(() => {
     const loadToken = async () => {
       try {
         const storedToken = await SecureStore.getItemAsync("token");
-        console.log(storedToken)
         if (storedToken) {
           const userData = await getProfile(storedToken);
           setToken(storedToken);
           setUser(userData.data);
-        console.log(storedToken)
-
         }
       } catch (err) {
         console.log("Error loading token", err);
@@ -61,46 +50,48 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         setLoading(false);
       }
     };
-  
+
     loadToken();
-  }, [token]);
-
-
+  }, []);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
+    setError("");
     try {
       const data = await loginUser({ email, password });
-      const { token } = data as loginResponse
-      console.log(token)
-      await SecureStore.setItemAsync("token", token );
-      setToken(token);
+      const { token } = data.data;
+      await SecureStore.setItemAsync("token", token);
       const currentUser = await getProfile(token);
       setUser(currentUser.data);
+      setToken(token);
+      Alert.alert("Success", "Login successful!");
     } catch (err) {
-      const error = err as  AxiosError<errorResponse>
-      setError(error.response?.data.message || "Something went wrong")
-      console.log(error)
-    }
-       finally {
+      console.log("Login error:", err);
+      if (err instanceof Error) {
+        Alert.alert("Error", err.message);
+      } else {
+        Alert.alert("Error", "An error occurred during login");
+      }
+    } finally {
       setLoading(false);
     }
   };
 
-  const signUp = async (
-    name: string,
-    email: string,
-    password: string
-  ) => {
+  const signUp = async (name: string, email: string, password: string) => {
     setLoading(true);
+    setError("");
     try {
-
       const data = await registerUser({ name, email, password });
-      console.log(data)
-      setSignedUp(true)
+      console.log("data", data);
+      Alert.alert("Success", "Account created successfully! Please login.");
+      router.replace("/SignIn");
     } catch (err) {
-      const error = err as AxiosError<errorResponse>
-      setError(error.response?.data.message || "Something went wrong")
+      console.log("Signup error:", err);
+      if (err instanceof Error) {
+        Alert.alert("Error", err.message);
+      } else {
+        Alert.alert("Error", "An error occurred during signup");
+      }
     } finally {
       setLoading(false);
     }
@@ -112,28 +103,19 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       await SecureStore.deleteItemAsync("token");
       setToken(null);
       setUser(null);
+      Alert.alert("Success", "Logged out successfully!");
     } catch (err) {
       console.log("Sign out error:", err);
+      Alert.alert("Error", "An error occurred during sign out");
     } finally {
       setLoading(false);
     }
   };
 
-  const contextData = { token, login, signUp, user, signOut, isSignedUp, isLoading, error };
+  const contextData = { token, login, signUp, user, signOut, isLoading, error };
 
   return (
-    <AuthContext.Provider value={contextData}>
-      {/* {isLoading ? (
-        <SafeAreaView
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="large" color="cyan" />
-        </SafeAreaView>
-      ) : (
-        children
-      )} */}
-  {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
 

@@ -1,10 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Redirect, Tabs } from 'expo-router';
-import { useAuth } from '@/context/authContext';
+import { useAuth } from '@/src/context/authContext';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
 
 export default function TabLayout() {
-  const { token, isSignedUp, isLoading } = useAuth();
+  const { token, isLoading } = useAuth();
 
   console.log('token', token);
 
@@ -18,17 +18,14 @@ export default function TabLayout() {
   }
 
   // ✅ Handle auth logic after loading is complete
-  if (isSignedUp) {
+
+
+  if (!token) {
     console.log('Redirecting to sign in');
     return <Redirect href="/SignIn" />;
   }
 
-  if (!token) {
-    console.log('Redirecting to sign up');
-    return <Redirect href="/SignUp" />;
-  }
-
-  // ✅ If everything is okay, show tabs
+  //✅ If everything is okay, show tabs
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
       <Tabs.Screen

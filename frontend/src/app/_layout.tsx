@@ -1,6 +1,6 @@
-import { Slot, Redirect } from 'expo-router';
+import { Slot} from 'expo-router';
 
-import {  AuthProvider, useAuth } from '@/context/authContext';
+import { AuthProvider} from '@/src/context/authContext';
 import './global.css'
 
 
