@@ -61,7 +61,7 @@ const SignUp = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex flex-column flex-1 justify-center p-6"
+      className="flex flex-column flex-1 justify-center p-6 bg-white"
     >
       <Text className="text-3xl text-center font-bold ">Sign Up</Text>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
