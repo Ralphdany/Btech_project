@@ -7,19 +7,25 @@ import React, {
 } from "react";
 import * as SecureStore from "expo-secure-store";
 import { loginUser, registerUser, getProfile } from "../services/authService";
+import { getAllUsers } from "../services/userService";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
+
+type Users = { _id: string; name: string; email: string }[];
 
 interface AuthContextType {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   signUp: (username: string, email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  user: userType | null;
+  CurrentUser: userType | null;
+  allUsers: userType[];
   error: string;
   isLoading: boolean;
+  getAllUsers: (token: string) => Promise<Users>;
 }
 interface userType {
+  _id: string;
   name: string;
   email: string;
 }
@@ -29,7 +35,8 @@ const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<userType | null>(null);
+  const [CurrentUser, setCurrentUser] = useState<userType | null>(null);
+  const [allUsers, setAllUsers] = useState<userType[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
 
@@ -40,9 +47,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       try {
         const storedToken = await SecureStore.getItemAsync("token");
         if (storedToken) {
-          const userData = await getProfile(storedToken);
+          const CurrentUserData = await getProfile(storedToken);
+          const allUsersData = await getAllUsers(storedToken);
           setToken(storedToken);
-          setUser(userData.data);
+          setCurrentUser(CurrentUserData.data);
+          setAllUsers(allUsersData)
+          // console.log("Current User:", CurrentUserData.data)
+          console.log("All Users:", allUsersData);
+
         }
       } catch (err) {
         console.log("Error loading token", err);
@@ -62,7 +74,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const { token } = data.data;
       await SecureStore.setItemAsync("token", token);
       const currentUser = await getProfile(token);
-      setUser(currentUser.data);
+      setCurrentUser(currentUser.data);
       setToken(token);
       Alert.alert("Success", "Login successful!");
     } catch (err) {
@@ -102,7 +114,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     try {
       await SecureStore.deleteItemAsync("token");
       setToken(null);
-      setUser(null);
+      setCurrentUser(null);
       Alert.alert("Success", "Logged out successfully!");
     } catch (err) {
       console.log("Sign out error:", err);
@@ -112,7 +124,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const contextData = { token, login, signUp, user, signOut, isLoading, error };
+  const contextData = { token, login, signUp, CurrentUser, signOut, isLoading, error, getAllUsers, allUsers };
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

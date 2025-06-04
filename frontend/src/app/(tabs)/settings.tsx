@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Modal from '@/src/components/modal';
 
 export default function Settings() {
-  const { signOut, user } = useAuth();
+  const { signOut, CurrentUser } = useAuth();
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(false);
@@ -30,11 +30,11 @@ export default function Settings() {
         <View className="items-center">
           <View className="bg-cyan-500 w-20 h-20 rounded-full items-center justify-center mb-4">
             <Text className="text-white text-3xl font-bold">
-              {getInitials(user?.name)}
+              {getInitials(CurrentUser?.name)}
             </Text>
           </View>
-          <Text className="text-xl font-bold text-gray-800">{user?.name}</Text>
-          <Text className="text-gray-500">{user?.email}</Text>
+          <Text className="text-xl font-bold text-gray-800">{CurrentUser?.name}</Text>
+          <Text className="text-gray-500">{CurrentUser?.email}</Text>
         </View>
       </View>
 

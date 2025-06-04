@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 export default function Index() {
-  const { user } = useAuth();
+  const { CurrentUser } = useAuth();
   const router = useRouter();
   
   const getInitials = (name: string | undefined) => {
@@ -19,13 +19,13 @@ export default function Index() {
           <View className="flex-row items-center">
             <View className="bg-white w-12 h-12 rounded-full items-center justify-center mr-4">
               <Text className="text-cyan-500 text-xl font-bold">
-                {getInitials(user?.name)}
+                {getInitials(CurrentUser?.name)}
               </Text>
             </View>
             <View>
               <Text className="text-white text-lg opacity-80">Welcome back,</Text>
               <Text className="text-white text-xl font-bold">
-                {user?.name || 'Guest'}
+                {CurrentUser?.name || 'Guest'}
               </Text>
             </View>
           </View>
