@@ -30,7 +30,6 @@ interface userType {
   email: string;
 }
 
-
 const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -47,14 +46,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       try {
         const storedToken = await SecureStore.getItemAsync("token");
         if (storedToken) {
+          console.log(storedToken);
           const CurrentUserData = await getProfile(storedToken);
           const allUsersData = await getAllUsers(storedToken);
           setToken(storedToken);
           setCurrentUser(CurrentUserData.data);
-          setAllUsers(allUsersData)
-          // console.log("Current User:", CurrentUserData.data)
-          console.log("All Users:", allUsersData);
-
+          setAllUsers(allUsersData);
+          // // console.log("Current User:", CurrentUserData.data)
+          // console.log("All Users:", allUsersData);
         }
       } catch (err) {
         console.log("Error loading token", err);
@@ -124,7 +123,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const contextData = { token, login, signUp, CurrentUser, signOut, isLoading, error, getAllUsers, allUsers };
+  const contextData = {
+    token,
+    login,
+    signUp,
+    CurrentUser,
+    signOut,
+    isLoading,
+    error,
+    getAllUsers,
+    allUsers,
+  };
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

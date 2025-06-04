@@ -21,7 +21,6 @@ export default function App() {
     getAllUsers(token)
       .then(users => {
         setAllUsers(users);
-        console.log("Fetched users:", users);
       })
       .catch(err => {
         console.error("Failed to fetch users:", err);

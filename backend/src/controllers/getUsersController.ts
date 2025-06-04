@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 
 interface decodedToken {
-    _id: string;
+    userId: string;
     email: string;
 }
 
@@ -17,11 +17,12 @@ export const getUsersController = async (req: Request, res: Response) => {
     }
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY || "") as decodedToken;
+    console.log(decoded)
     if (!decoded) {
       return res.status(401).json({ error: "Invalid token" });
     }
 
-    const currentUserId = decoded._id
+    const currentUserId = decoded.userId
 
     const users = await User.find({_id: {$ne: currentUserId}}).select(["-password", "-__v"]) as Users;
     res.status(200).json(users);
