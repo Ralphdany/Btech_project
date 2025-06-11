@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const loadToken = async () => {
+      setLoading(true);
       try {
         const storedToken = await SecureStore.getItemAsync("token");
         if (storedToken) {
@@ -73,7 +74,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const { token } = data.data;
       await SecureStore.setItemAsync("token", token);
       const currentUser = await getProfile(token);
+      const users = await getAllUsers(token)
       setCurrentUser(currentUser.data);
+      setAllUsers(users);
       setToken(token);
       Alert.alert("Success", "Login successful!");
     } catch (err) {
@@ -114,6 +117,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       await SecureStore.deleteItemAsync("token");
       setToken(null);
       setCurrentUser(null);
+      router.replace("/SignIn");
       Alert.alert("Success", "Logged out successfully!");
     } catch (err) {
       console.log("Sign out error:", err);

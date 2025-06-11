@@ -22,7 +22,7 @@ export default function TabLayout() {
   }
 
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "#06b6d4" }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: "#06b6d4"}}>
       <Tabs.Screen
         name="index"
         options={{
@@ -45,6 +45,7 @@ export default function TabLayout() {
         name="chats"
         options={{
           title: "Chats",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="chatbubbles" color={color} />
           ),

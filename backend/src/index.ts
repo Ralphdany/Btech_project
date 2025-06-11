@@ -71,7 +71,7 @@ interface AuthRequest extends Request {
 
 io.on("connection", (socket) => {
  
-  console.log(`User ${socket.user?.name} connected with ID: ${socket.id} and email: ${socket.user?.email}`);
+  console.log(`User ${socket.user?.name} connected with ID: ${socket.user?.userId} and email: ${socket.user?.email}`);
   console.log("A user connected");
 
   socket.on("disconnect", () => {
