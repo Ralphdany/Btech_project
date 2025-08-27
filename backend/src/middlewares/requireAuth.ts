@@ -31,6 +31,7 @@ export const requireAuth = async (
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY || "") as {
       userId: string;
+      email: string;
     };
     const user = (await User.findById(decoded.userId)) as IUser & {
       _id: Types.ObjectId;

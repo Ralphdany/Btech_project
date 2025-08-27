@@ -2,11 +2,13 @@ import { View, Text, TouchableOpacity, Switch } from 'react-native';
 import { useAuth } from '../../context/authContext';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import Modal from '@/src/components/modal';
 
 export default function Settings() {
-  const { signOut, user } = useAuth();
+  const { signOut, CurrentUser } = useAuth();
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
 
   const getInitials = (name: string | undefined): string => {
     if (!name) return '?';
@@ -28,11 +30,11 @@ export default function Settings() {
         <View className="items-center">
           <View className="bg-cyan-500 w-20 h-20 rounded-full items-center justify-center mb-4">
             <Text className="text-white text-3xl font-bold">
-              {getInitials(user?.name)}
+              {getInitials(CurrentUser?.name)}
             </Text>
           </View>
-          <Text className="text-xl font-bold text-gray-800">{user?.name}</Text>
-          <Text className="text-gray-500">{user?.email}</Text>
+          <Text className="text-xl font-bold text-gray-800">{CurrentUser?.name}</Text>
+          <Text className="text-gray-500">{CurrentUser?.email}</Text>
         </View>
       </View>
 
@@ -83,13 +85,44 @@ export default function Settings() {
           </TouchableOpacity>
           <TouchableOpacity 
             className="flex-row items-center px-6 py-4"
-            onPress={handleSignOut}
+            onPress={() => setModalVisibility(true)}
           >
             <Ionicons name="log-out" size={22} color="#dc2626" />
             <Text className="text-red-600 ml-3">Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+      isOpen={modalVisibility}
+      >
+        <View className='bg-white p-3 w-full rounded-xl'>
+          <View className='flex-row items-center justify-between mt-3'>
+            <Text className='text-lg font-bold text-gray-800'>Sign Out</Text>
+            <TouchableOpacity 
+              onPress={() => setModalVisibility(false)}
+              className='rounded-full p-2'>
+              <Ionicons name="close" size={22} color="#4b5563" />
+              </TouchableOpacity>
+            
+          </View>
+          <Text className='text-black mt-3'>Are you sure you want to sign out?</Text>
+          <View>
+            <TouchableOpacity 
+              className='bg-cyan-500 rounded-xl px-6 py-4 mt-4'
+              onPress={handleSignOut}
+            >
+              <Text className='text-white text-center'>Yes, Sign Out</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              className='bg-red-600 rounded-xl px-6 py-4 mt-4'
+              onPress={() => setModalVisibility(false)}
+            >
+              <Text className='text-white text-center'>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        
+      </Modal>
     </View>
   );
 }
